@@ -1,7 +1,7 @@
 import express from "express";
-import productController from "../controller/product-controller";
+import productController from "../controller/product-controller.js";
 
-export const route = express.Router();
+export const route = new express.Router();
 
 route.get("/products", productController.getProduct);
 
