@@ -26,8 +26,17 @@ const getProductId = async (req, res, next) => {
     }
 };
 
-const saveProduct = async (req, res, next) => {
+const addProduct = async (req, res, next) => {
     try {
+        // const name = req.body.name;
+        // const image = req.file.image;
+
+        const result = await productService.addProduct(req.file.image);
+        if (!result) {
+            response(404, result, "data kong", res);
+        }
+        console.log(result);
+        response(200, result, "data success created", res);
     } catch (error) {
         next();
     }
@@ -50,7 +59,7 @@ const deleteProduct = async (req, res, next) => {
 export default {
     getProduct,
     getProductId,
-    saveProduct,
+    addProduct,
     updateProduct,
     deleteProduct,
 };

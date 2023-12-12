@@ -7,7 +7,7 @@ route.get("/products", productController.getProduct);
 
 route.get("/products/:id", productController.getProductId);
 
-route.post("/products", productController.saveProduct);
+route.post("/products", productController.addProduct);
 
 route.patch("/products/:id", productController.updateProduct);
 

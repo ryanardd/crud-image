@@ -1,4 +1,4 @@
-import { getProductValidation } from "../validation/product-validation.js";
+import { addProductValidation, getProductValidation } from "../validation/product-validation.js";
 import { validation } from "../validation/validation.js";
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
@@ -29,7 +29,13 @@ const getProductId = async (request) => {
     return db;
 };
 
-const saveProduct = async (request) => {};
+const addProduct = async (request) => {
+    request = validation(addProductValidation, request);
+
+    return prismaClient.product.create({
+        data: request,
+    });
+};
 
 const updateProduct = async (request) => {};
 
@@ -38,7 +44,7 @@ const deleteProduct = async (request) => {};
 export default {
     getProduct,
     getProductId,
-    saveProduct,
+    addProduct,
     updateProduct,
     deleteProduct,
 };
