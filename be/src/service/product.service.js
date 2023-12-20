@@ -1,12 +1,20 @@
 import { addProductValidation, getProductValidation } from "../validation/product-validation.js";
-import { validation } from "../validation/validation.js";
+import { validate } from "../validation/validation.js";
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
+// import { handleImageUpload } from "./upload-image.service.js";
+// import multer from "multer";
+// import { handleImageUpload } from "./upload-image.service.js";
 
 const getProduct = async (request) => {
-    request = validation(getProductValidation, request);
+    request = validate(getProductValidation, request);
 
-    return prismaClient.product.findMany();
+    return prismaClient.product.findMany({
+        select: {
+            name: true,
+            id: true,
+        },
+    });
 };
 
 const getProductId = async (request) => {
@@ -29,12 +37,27 @@ const getProductId = async (request) => {
     return db;
 };
 
-const addProduct = async (request) => {
-    request = validation(addProductValidation, request);
+const addProduct = async (name, image) => {
+    const request = validate(addProductValidation, { name, image });
 
-    return prismaClient.product.create({
-        data: request,
+    // await handleImageUpload(image);
+    // if (!request) {
+    //     await handleImageUpload(image);
+    // }
+
+    const created = await prismaClient.product.create({
+        data: {
+            name: name,
+            image: image,
+            url: image,
+        },
+        select: {
+            name: true,
+            url: true,
+        },
     });
+
+    return created;
 };
 
 const updateProduct = async (request) => {};

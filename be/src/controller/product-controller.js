@@ -1,3 +1,4 @@
+import { ResponseError } from "../error/response-error.js";
 import { response } from "../response/response.js";
 import productService from "../service/product.service.js";
 
@@ -10,7 +11,7 @@ const getProduct = async (req, res, next) => {
 
         response(200, result, "get all product", res);
     } catch (error) {
-        next();
+        next(error);
     }
 };
 
@@ -22,23 +23,24 @@ const getProductId = async (req, res, next) => {
 
         response(200, result, "get all product by id", res);
     } catch (error) {
-        next();
+        next(error);
     }
 };
 
 const addProduct = async (req, res, next) => {
     try {
-        // const name = req.body.name;
-        // const image = req.file.image;
+        const name = req.body.name;
+        const image = req.file.path;
 
-        const result = await productService.addProduct(req.file.image);
-        if (!result) {
-            response(404, result, "data kong", res);
+        if (!name || !image) {
+            throw new ResponseError(404, "please input data field");
         }
-        console.log(result);
+
+        const result = await productService.addProduct(name, image);
+
         response(200, result, "data success created", res);
     } catch (error) {
-        next();
+        next(error);
     }
 };
 

@@ -4,6 +4,10 @@ const prismaClient = new PrismaClient({
     log: [
         {
             emit: "event",
+            level: "query",
+        },
+        {
+            emit: "event",
             level: "error",
         },
         {
@@ -12,28 +16,24 @@ const prismaClient = new PrismaClient({
         },
         {
             emit: "event",
-            level: "query",
-        },
-        {
-            emit: "event",
             level: "warn",
         },
     ],
 });
 
+// throw logging to logging.js
 prismaClient.$on("error", (e) => {
-    console.log(e);
+    console.error(e);
 });
 
 prismaClient.$on("info", (e) => {
-    console.log(e);
-});
-
-prismaClient.$on("query", (e) => {
-    console.log(e);
+    console.info(e);
 });
 
 prismaClient.$on("warn", (e) => {
+    console.warn(e);
+});
+prismaClient.$on("query", (e) => {
     console.log(e);
 });
 
