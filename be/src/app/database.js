@@ -21,7 +21,6 @@ const prismaClient = new PrismaClient({
     ],
 });
 
-// throw logging to logging.js
 prismaClient.$on("error", (e) => {
     console.error(e);
 });
