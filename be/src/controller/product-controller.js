@@ -55,8 +55,19 @@ const addProduct = async (req, res, next) => {
 
 const updateProduct = async (req, res, next) => {
     try {
+        const id = req.params.id;
+        const name = req.body.name;
+        const image = req.file.path;
+
+        const result = await productService.updateProduct(id, { name, image });
+
+        response(200, result, "data updated", res);
     } catch (error) {
-        next();
+        next(error);
+        // untuk menghapus file image dalam directory ketika inputan tidak lengkap
+        if (req.file) {
+            fs.unlinkSync(req.file.path);
+        }
     }
 };
 

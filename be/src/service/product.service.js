@@ -1,4 +1,8 @@
-import { addProductValidation, getProductValidation } from "../validation/product-validation.js";
+import {
+    addProductValidation,
+    getProductValidation,
+    updateProductValidation,
+} from "../validation/product-validation.js";
 import { validate } from "../validation/validation.js";
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
@@ -50,7 +54,47 @@ const addProduct = async (data) => {
     return created;
 };
 
-const updateProduct = async (request) => {};
+const updateProduct = async (id, request) => {
+    const user = validate(getProductValidation, id);
+
+    const data = await prismaClient.product.count({
+        where: {
+            id: user,
+        },
+    });
+
+    if (data !== 1) {
+        throw new ResponseError(404, "id is not found");
+    }
+
+    request = validate(updateProductValidation, request);
+
+    const update = {};
+
+    if (request.name) {
+        update.name = request.name;
+    }
+
+    if (request.image) {
+        update.image = request.image;
+    }
+
+    return prismaClient.product.update({
+        where: {
+            id: user.id,
+        },
+        data: {
+            name: update.name,
+            image: update.image,
+            url: update.image,
+            updatedAt: new Date(),
+        },
+        select: {
+            name: true,
+            url: true,
+        },
+    });
+};
 
 const deleteProduct = async (request) => {};
 

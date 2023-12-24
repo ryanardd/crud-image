@@ -1,6 +1,5 @@
 import express from "express";
 import productController from "../controller/product-controller.js";
-import multer from "multer";
 
 const route = new express.Router();
 
