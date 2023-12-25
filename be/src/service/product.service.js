@@ -6,6 +6,7 @@ import {
 import { validate } from "../validation/validation.js";
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
+import fs from "fs";
 
 const getProduct = async (request) => {
     return prismaClient.product.findMany({
@@ -57,13 +58,15 @@ const addProduct = async (data) => {
 const updateProduct = async (id, request) => {
     const user = validate(getProductValidation, id);
 
-    const data = await prismaClient.product.count({
+    const data = await prismaClient.product.findFirst({
         where: {
             id: user,
         },
     });
 
-    if (data !== 1) {
+    // console.log(data.image);
+
+    if (!data) {
         throw new ResponseError(404, "id is not found");
     }
 
@@ -79,9 +82,14 @@ const updateProduct = async (id, request) => {
         update.image = request.image;
     }
 
+    // hapus gambar lama ketika akan di upadate
+    if (data.image !== update.image) {
+        fs.unlinkSync(data.image);
+    }
+
     return prismaClient.product.update({
         where: {
-            id: user.id,
+            id: user,
         },
         data: {
             name: update.name,
