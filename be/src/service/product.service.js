@@ -104,7 +104,27 @@ const updateProduct = async (id, request) => {
     });
 };
 
-const deleteProduct = async (request) => {};
+const deleteProduct = async (request) => {
+    request = validate(getProductValidation, request);
+
+    const id = await prismaClient.product.findFirst({
+        where: {
+            id: request,
+        },
+    });
+
+    if (!id) {
+        throw new ResponseError(404, "id is not found");
+    }
+
+    fs.unlinkSync(id.image);
+
+    return prismaClient.product.delete({
+        where: {
+            id: request,
+        },
+    });
+};
 
 export default {
     getProduct,

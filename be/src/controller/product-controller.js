@@ -22,7 +22,7 @@ const getProductId = async (req, res, next) => {
 
         const result = await productService.getProductId(id);
 
-        response(200, result, "get all product by id", res);
+        response(200, result, "get product by id", res);
     } catch (error) {
         next(error);
     }
@@ -43,7 +43,7 @@ const addProduct = async (req, res, next) => {
 
         const result = await productService.addProduct({ name, image });
 
-        response(200, result, "data success created", res);
+        response(200, result, "created successfuly", res);
     } catch (error) {
         next(error);
         // untuk menghapus file image dalam directory ketika inputan tidak lengkap
@@ -61,7 +61,7 @@ const updateProduct = async (req, res, next) => {
 
         const result = await productService.updateProduct(id, { name, image });
 
-        response(200, result, "data updated", res);
+        response(200, result, "updated successfuly", res);
     } catch (error) {
         next(error);
         // untuk menghapus file image dalam directory ketika inputan tidak lengkap
@@ -73,8 +73,12 @@ const updateProduct = async (req, res, next) => {
 
 const deleteProduct = async (req, res, next) => {
     try {
+        const id = req.params.id;
+
+        const result = await productService.deleteProduct(id);
+        response(200, result, "deleted successfuly", res);
     } catch (error) {
-        next();
+        next(error);
     }
 };
 
