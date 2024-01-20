@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button"
 import {
     Table,
@@ -8,9 +9,22 @@ import {
     TableHeader,
     TableRow,
 } from "./ui/table"
+import axios from "axios";
 
 
 const ProductList = () => {
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        getProducts()
+    }, [])
+
+    const getProducts = async () => {
+        const response = await axios.get('http://localhost:4000/products')
+        console.log(response.data.payload.data)
+        setProducts(response.data.payload.data)
+    }
+
     return (
 
         <div className="container mx-auto mt-6">
@@ -29,81 +43,23 @@ const ProductList = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow>
-                        <TableCell className="font-medium text-center">001</TableCell>
-                        <TableCell className="text-center">Barang Jasa</TableCell>
-                        <TableCell >
-                            <div className="w-56 h-36">
-                                <img src="src/assets/php.jpg" alt="gambar" className="w-full h-full object-contain" loading="lazy" />
-                            </div>
-                        </TableCell>
-                        <TableCell className="text-center">
-                            <div className="flex justify-evenly">
-                                <Button>Edit</Button>
-                                <Button>Delete</Button>
-                            </div>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell className="font-medium text-center">002</TableCell>
-                        <TableCell className="text-center">Barang Baru</TableCell>
-                        <TableCell >
-                            <div className="w-56 h-36">
-                                <img src="src/assets/live-your-dream.jpg" alt="gambar" className="w-full h-full object-contain" loading="lazy" />
-                            </div>
-                        </TableCell>
-                        <TableCell className="text-center">
-                            <div className="flex justify-evenly">
-                                <Button>Edit</Button>
-                                <Button>Delete</Button>
-                            </div>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell className="font-medium text-center">003</TableCell>
-                        <TableCell className="text-center">Barang Lama</TableCell>
-                        <TableCell>
-                            <div className="w-56 h-36">
-                                <img src="src/assets/coding.jpg" alt="gambar" className="w-full h-full object-contain" loading="lazy" />
-                            </div>
-                        </TableCell>
-                        <TableCell className="text-center">
-                            <div className="flex justify-evenly">
-                                <Button>Edit</Button>
-                                <Button>Delete</Button>
-                            </div>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell className="font-medium text-center">004</TableCell>
-                        <TableCell className="text-center">Barang Baru</TableCell>
-                        <TableCell >
-                            <div className="w-56 h-36">
-                                <img src="src/assets/live-your-dream.jpg" alt="gambar" className="w-full h-full object-contain" loading="lazy" />
-                            </div>
-                        </TableCell>
-                        <TableCell className="text-center">
-                            <div className="flex justify-evenly">
-                                <Button>Edit</Button>
-                                <Button>Delete</Button>
-                            </div>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell className="font-medium text-center">005</TableCell>
-                        <TableCell className="text-center">Barang Baru</TableCell>
-                        <TableCell >
-                            <div className="w-56 h-36">
-                                <img src="src/assets/live-your-dream.jpg" alt="gambar" className="w-full h-full object-contain" loading="lazy" />
-                            </div>
-                        </TableCell>
-                        <TableCell className="text-center">
-                            <div className="flex justify-evenly">
-                                <Button>Edit</Button>
-                                <Button>Delete</Button>
-                            </div>
-                        </TableCell>
-                    </TableRow>
+                    {products.map((product) => (
+                        <TableRow key={product.id}>
+                            <TableCell className="font-medium text-center">001</TableCell>
+                            <TableCell className="text-center">{product.name}</TableCell>
+                            <TableCell >
+                                <div className="w-56 h-36">
+                                    <img src={product.image} alt="Image" className="w-full h-full object-contain" loading="lazy" />
+                                </div>
+                            </TableCell>
+                            <TableCell className="text-center">
+                                <div className="flex justify-evenly">
+                                    <Button>Edit</Button>
+                                    <Button>Delete</Button>
+                                </div>
+                            </TableCell>
+                        </TableRow>
+                    ))}
                 </TableBody>
             </Table>
         </div>
