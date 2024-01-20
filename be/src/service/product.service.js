@@ -9,12 +9,7 @@ import { ResponseError } from "../error/response-error.js";
 import fs from "fs";
 
 const getProduct = async (request) => {
-    return prismaClient.product.findMany({
-        select: {
-            name: true,
-            id: true,
-        },
-    });
+    return prismaClient.product.findMany({});
 };
 
 const getProductId = async (request) => {
@@ -37,14 +32,14 @@ const getProductId = async (request) => {
     return db;
 };
 
-const addProduct = async (data) => {
+const addProduct = async (data, req) => {
     const request = validate(addProductValidation, data);
 
     const created = await prismaClient.product.create({
         data: {
             name: data.name,
             image: data.image,
-            url: data.image,
+            url: req ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : null,
         },
         select: {
             name: true,
@@ -55,7 +50,7 @@ const addProduct = async (data) => {
     return created;
 };
 
-const updateProduct = async (id, request) => {
+const updateProduct = async (id, request, req) => {
     const user = validate(getProductValidation, id);
 
     const data = await prismaClient.product.findFirst({
@@ -63,8 +58,6 @@ const updateProduct = async (id, request) => {
             id: user,
         },
     });
-
-    // console.log(data.image);
 
     if (!data) {
         throw new ResponseError(404, "id is not found");
@@ -94,7 +87,7 @@ const updateProduct = async (id, request) => {
         data: {
             name: update.name,
             image: update.image,
-            url: update.image,
+            url: req ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : null,
             updatedAt: new Date(),
         },
         select: {

@@ -41,7 +41,7 @@ const addProduct = async (req, res, next) => {
             throw new ResponseError(404, "please, input field name");
         }
 
-        const result = await productService.addProduct({ name, image });
+        const result = await productService.addProduct({ name, image }, req);
 
         response(200, result, "created successfuly", res);
     } catch (error) {
@@ -59,7 +59,7 @@ const updateProduct = async (req, res, next) => {
         const name = req.body.name;
         const image = req.file.path;
 
-        const result = await productService.updateProduct(id, { name, image });
+        const result = await productService.updateProduct(id, { name, image }, req);
 
         response(200, result, "updated successfuly", res);
     } catch (error) {
