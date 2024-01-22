@@ -10,6 +10,7 @@ export const web = express();
 web.use(cors());
 web.use(express.json());
 web.use(bodyParser.json());
+web.use("/images/", express.static("public/image"));
 web.use(
     multer({
         storage: fileStorage,
@@ -17,6 +18,5 @@ web.use(
         limits: { fileSize: 5 * 1024 * 1024 },
     }).single("image")
 );
-web.use(express.static("public"));
 web.use(route);
 web.use(errorMiddleware);
