@@ -49,7 +49,8 @@ const ProductList = () => {
                             <TableCell className="text-center">{product.name}</TableCell>
                             <TableCell >
                                 <div className="w-56 h-36">
-                                    <img src={product.image} alt="Image" className="w-full h-full object-contain" loading="lazy" />
+                                    {console.info(product.image)}
+                                    <img src={product.url} alt="image" className="w-full h-full object-contain" loading="lazy" />
                                 </div>
                             </TableCell>
                             <TableCell className="text-center">
