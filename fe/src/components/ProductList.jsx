@@ -27,7 +27,7 @@ const ProductList = () => {
 
     return (
 
-        <div className="container mx-auto mt-6">
+        <div className="container mx-auto mt-6 font-mono">
             <h2 className="font-sans font-bold text-3xl my-6">Product List</h2>
             <div className="my-3">
                 <Button className="bg-blue-600">Add Product</Button>
