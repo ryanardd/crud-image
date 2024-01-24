@@ -10,6 +10,7 @@ import {
     TableRow,
 } from "./ui/table"
 import axios from "axios";
+import { deleteProduct, getProduct } from "../services/product.service";
 
 
 const ProductList = () => {
@@ -20,8 +21,15 @@ const ProductList = () => {
     }, [])
 
     const getProducts = async () => {
-        const response = await axios.get('http://localhost:4000/products')
-        setProducts(response.data.payload.data)
+        await getProduct((e) => {
+            setProducts(e.payload.data)
+        })
+    }
+
+    const deleteProducts = async (id) => {
+        await deleteProduct(id, () => {
+            getProducts();
+        })
     }
 
     return (
@@ -42,9 +50,9 @@ const ProductList = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {products.map((product) => (
+                    {products.map((product, index) => (
                         <TableRow key={product.id}>
-                            <TableCell className="font-medium text-center">001</TableCell>
+                            <TableCell className="font-medium text-center">{index + 1}</TableCell>
                             <TableCell className="text-center">{product.name}</TableCell>
                             <TableCell >
                                 <div className="w-56 h-36">
@@ -54,7 +62,7 @@ const ProductList = () => {
                             <TableCell className="text-center">
                                 <div className="flex justify-evenly">
                                     <Button>Edit</Button>
-                                    <Button>Delete</Button>
+                                    <Button onClick={() => deleteProducts(product.id)}>Delete</Button>
                                 </div>
                             </TableCell>
                         </TableRow>

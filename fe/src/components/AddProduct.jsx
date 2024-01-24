@@ -13,7 +13,7 @@ export const AddProduct = () => {
     const [preview, setPreview] = useState("");
     const [failed, setFailed] = useState("")
 
-    const navigate = useNavigate()
+    const navigate = useNavigate("")
 
     const loadImage = (e) => {
         const image = e.target.files[0];
@@ -27,25 +27,21 @@ export const AddProduct = () => {
         formData.append("name", name)
         formData.append("image", image)
         try {
-            addProduct(formData, (status, res) => {
-                if (status === 404) {
-                    console.log(res.data)
-                } else {
-                    navigate('/')
-                }
-            });
+            await addProduct(formData);
+            navigate("/")
         } catch (error) {
-            callback(error);
+            setFailed(error.response.data.errors)
         }
-
     }
 
     return (
         <div className="container mx-auto mt-6 font-mono font-light">
             <div className="w-[70%] mx-auto ">
                 <h2 className="font-bold text-3xl my-6">Add Product</h2>
-                <p></p>
                 <div className="border p-3 rounded-lg">
+                    <div className="h-10">
+                        {failed && <p className="text-red-600">{failed}</p>}
+                    </div>
                     <form className="space-y-8" onSubmit={saveProduct}>
                         <FormItem>
                             <Label htmlFor="name">Product Name</Label>
@@ -58,9 +54,9 @@ export const AddProduct = () => {
                                     <br />
                                 </div>
                                 <div className="grid border w-32 h-32">
-                                    {preview ? (
+                                    {preview && (
                                         <img src={preview} alt="preview image" className="w-full h-full object-cover" loading="lazy" />
-                                    ) : ("")}
+                                    )}
                                 </div>
                             </div>
                         </FormItem>
