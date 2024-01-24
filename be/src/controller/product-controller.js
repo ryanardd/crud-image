@@ -31,14 +31,14 @@ const getProductId = async (req, res, next) => {
 const addProduct = async (req, res, next) => {
     try {
         if (!req.file) {
-            throw new ResponseError(404, "please, input field image");
+            throw new ResponseError(400, "Required field is missing or empty");
         }
 
         const name = req.body.name;
         const image = req.file.path;
 
         if (!name) {
-            throw new ResponseError(404, "please, input field name");
+            throw new ResponseError(400, "Required field is missing or empty");
         }
 
         const result = await productService.addProduct({ name, image }, req);
