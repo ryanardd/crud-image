@@ -64,7 +64,9 @@ const ProductList = () => {
                             </TableCell>
                             <TableCell className="text-center">
                                 <div className="flex justify-evenly">
-                                    <Button>Edit</Button>
+                                    <Link to={`edit/${product.id}`}>
+                                        <Button>Edit</Button>
+                                    </Link>
                                     <Button onClick={() => deleteProducts(product.id)}>Delete</Button>
                                 </div>
                             </TableCell>

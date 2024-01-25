@@ -21,7 +21,8 @@ const getProductId = async (request) => {
         },
         select: {
             name: true,
-            // image: true,
+            image: true,
+            url: true,
         },
     });
 
@@ -87,7 +88,7 @@ const updateProduct = async (id, request, req) => {
         data: {
             name: update.name,
             image: update.image,
-            url: req ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : null,
+            url: req ? `${req.protocol}://${req.get("host")}/images/${update.image}` : null,
             updatedAt: new Date(),
         },
         select: {

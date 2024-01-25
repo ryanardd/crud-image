@@ -57,7 +57,8 @@ const updateProduct = async (req, res, next) => {
     try {
         const id = req.params.id;
         const name = req.body.name;
-        const image = req.file.path;
+        const image = req.file?.path;
+        console.log(id);
 
         const result = await productService.updateProduct(id, { name, image }, req);
 

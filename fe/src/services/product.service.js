@@ -1,13 +1,5 @@
 import axios from "axios";
 
-export const addProduct = async (product) => {
-    await axios.post("http://localhost:4000/products", product, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
-    });
-};
-
 export const getProduct = async (callback) => {
     await axios
         .get("http://localhost:4000/products")
@@ -16,6 +8,32 @@ export const getProduct = async (callback) => {
         })
         .catch((error) => {
             console.log(error);
+        });
+};
+
+export const getProductById = async (id, callback) => {
+    await axios.get(`http://localhost:4000/products/${id}`).then((res) => {
+        callback(res.data);
+    });
+};
+
+export const addProduct = async (product) => {
+    await axios.post("http://localhost:4000/products", product, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+};
+
+export const updateProducts = async (id, update, callback) => {
+    await axios
+        .patch(`http://localhost:4000/products/${id}`, update, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
+        .then((res) => {
+            console.log(res.data);
         });
 };
 
