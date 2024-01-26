@@ -75,10 +75,12 @@ const updateProduct = async (id, request, req) => {
 
     if (request.image) {
         update.image = request.image;
+        update.url = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
         if (data.image !== update.image) {
             fs.unlinkSync(data.image);
         }
     } else {
+        update.url = data.url;
         update.image = data.image;
     }
 
@@ -89,7 +91,8 @@ const updateProduct = async (id, request, req) => {
         data: {
             name: update.name,
             image: update.image,
-            url: req ? `${req.protocol}://${req.get("host")}/images/${update.image}` : null,
+            // url: req ? `${req.protocol}://${req.get("host")}/images/${update.url}` : null,
+            url: update.url,
             updatedAt: new Date(),
         },
         select: {
