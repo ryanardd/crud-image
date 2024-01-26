@@ -91,7 +91,6 @@ const updateProduct = async (id, request, req) => {
         data: {
             name: update.name,
             image: update.image,
-            // url: req ? `${req.protocol}://${req.get("host")}/images/${update.url}` : null,
             url: update.url,
             updatedAt: new Date(),
         },
