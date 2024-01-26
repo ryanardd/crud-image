@@ -3,7 +3,7 @@ import { Button } from "./ui/button"
 import { FormItem } from "./ui/form"
 import { Input } from "./ui/input"
 import { Label } from "@radix-ui/react-label"
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getProductById, updateProducts } from "../services/product.service"
 
 export const EditProduct = () => {
@@ -12,7 +12,10 @@ export const EditProduct = () => {
     const [image, setImage] = useState("");
     const [preview, setPreview] = useState("");
     const [failed, setFailed] = useState("")
+    const [success, setSuccess] = useState("")
     const { id } = useParams();
+
+    const navigate = useNavigate("")
 
     useEffect(() => {
         getProductId()
@@ -39,13 +42,15 @@ export const EditProduct = () => {
         formData.append('image', image);
         try {
             await updateProducts(id, formData, ((res) => {
-                console.log(res)
+                setSuccess(res.message)
             }))
+            setTimeout(() => {
+                navigate("/")
+            }, 1000);
         } catch (error) {
             setFailed(error.response.data.errors)
         }
     }
-
 
     return (
         <div className="container mx-auto mt-6 font-mono font-light">
@@ -54,6 +59,7 @@ export const EditProduct = () => {
                 <div className="border p-3 rounded-lg">
                     <div className="h-10">
                         {failed && <p className="text-red-600">{failed}</p>}
+                        {success && <p className="text-green-600">{success}</p>}
                     </div>
                     <form className="space-y-8" onSubmit={updateProduct}>
                         <FormItem>

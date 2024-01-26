@@ -33,7 +33,7 @@ export const updateProducts = async (id, update, callback) => {
             },
         })
         .then((res) => {
-            console.log(res.data);
+            callback(res.data);
         });
 };
 
