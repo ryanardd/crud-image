@@ -44,6 +44,7 @@ const addProduct = async (data, req) => {
         },
         select: {
             name: true,
+            image: true,
             url: true,
         },
     });
@@ -74,11 +75,11 @@ const updateProduct = async (id, request, req) => {
 
     if (request.image) {
         update.image = request.image;
-    }
-
-    // hapus gambar lama ketika akan di upadate
-    if (data.image !== update.image) {
-        fs.unlinkSync(data.image);
+        if (data.image !== update.image) {
+            fs.unlinkSync(data.image);
+        }
+    } else {
+        update.image = data.image;
     }
 
     return prismaClient.product.update({
@@ -93,6 +94,7 @@ const updateProduct = async (id, request, req) => {
         },
         select: {
             name: true,
+            image: true,
             url: true,
         },
     });
