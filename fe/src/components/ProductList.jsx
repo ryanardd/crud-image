@@ -11,6 +11,17 @@ import {
 } from "./ui/table"
 import { deleteProduct, getProduct } from "../services/product.service";
 import { Link } from "react-router-dom";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 
 const ProductList = () => {
@@ -67,8 +78,25 @@ const ProductList = () => {
                                     <Link to={`edit/${product.id}`}>
                                         <Button>Edit</Button>
                                     </Link>
-                                    <Button onClick={() => deleteProducts(product.id)}>Delete</Button>
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button>Delete</Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    This action cannot be undone. This will permanently delete your product and remove your data from our servers.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => deleteProducts(product.id)}>Continue</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
                                 </div>
+
                             </TableCell>
                         </TableRow>
                     ))}

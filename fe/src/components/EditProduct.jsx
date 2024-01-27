@@ -58,7 +58,6 @@ export const EditProduct = () => {
                 <h2 className="font-bold text-3xl my-6">Edit Product</h2>
                 <div className="border p-3 rounded-lg">
                     <div className="h-10">
-                        {failed && <p className="text-red-600">{failed}</p>}
                         {success && <p className="text-green-600">{success}</p>}
                     </div>
                     <form className="space-y-8" onSubmit={updateProduct}>
@@ -81,6 +80,16 @@ export const EditProduct = () => {
                         </FormItem>
                         <Button type="submit">Edit</Button>
                     </form>
+                </div>
+                <div className="my-2">
+                    {failed &&
+                        <Alert variant="destructive" className="bg-red-500 border-none text-slate-100">
+                            <AlertTitle>Error !</AlertTitle>
+                            <AlertDescription>
+                                {failed}
+                            </AlertDescription>
+                        </Alert>
+                    }
                 </div>
             </div>
         </div>

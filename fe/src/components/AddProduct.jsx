@@ -5,6 +5,11 @@ import { Input } from "./ui/input"
 import { Label } from "@radix-ui/react-label"
 import { addProduct } from "../services/product.service"
 import { useNavigate } from "react-router-dom"
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+} from "@/components/ui/alert"
 
 export const AddProduct = () => {
 
@@ -39,9 +44,6 @@ export const AddProduct = () => {
             <div className="w-[70%] mx-auto ">
                 <h2 className="font-bold text-3xl my-6">Add Product</h2>
                 <div className="border p-3 rounded-lg">
-                    <div className="h-10">
-                        {failed && <p className="text-red-600">{failed}</p>}
-                    </div>
                     <form className="space-y-8" onSubmit={saveProduct}>
                         <FormItem>
                             <Label htmlFor="name">Product Name</Label>
@@ -62,6 +64,16 @@ export const AddProduct = () => {
                         </FormItem>
                         <Button type="submit">Submit</Button>
                     </form>
+                </div>
+                <div className="my-2">
+                    {failed &&
+                        <Alert variant="destructive" className="bg-red-500 border-none text-slate-100">
+                            <AlertTitle>Error !</AlertTitle>
+                            <AlertDescription>
+                                {failed}
+                            </AlertDescription>
+                        </Alert>
+                    }
                 </div>
             </div>
         </div>
